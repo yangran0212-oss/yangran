@@ -132,3 +132,113 @@ save()
 }
 
 renderCollection()
+
+function draw(){
+
+const box=document.getElementById("box")
+
+box.classList.add("box-open")
+
+setTimeout(()=>{
+box.classList.remove("box-open")
+openResult()
+},700)
+
+}
+
+if(item.rarity=="隐藏"){
+
+const fx=document.getElementById("secretEffect")
+
+fx.classList.add("show")
+
+setTimeout(()=>{
+fx.classList.remove("show")
+},1000)
+
+}
+
+const labubus=[]
+
+for(let i=1;i<=50;i++){
+
+let rarity="普通"
+
+if(i>35) rarity="稀有"
+if(i>45) rarity="史诗"
+if(i>49) rarity="隐藏"
+
+labubus.push({
+name:"Labubu "+i,
+rarity:rarity
+})
+
+}
+
+function renderCollection(){
+
+const grid=document.getElementById("collection")
+
+grid.innerHTML=""
+
+labubus.forEach(l=>{
+
+const owned=collection.includes(l.name)
+
+const div=document.createElement("div")
+
+div.className="card"
+
+div.innerHTML=owned?l.name:"❓ 未解锁"
+
+grid.appendChild(div)
+
+})
+
+}
+
+function buyCoins(n){
+
+coins+=n
+
+updateCoins()
+
+save()
+
+}
+
+let leaderboard=
+JSON.parse(localStorage.getItem("leaderboard")||"[]")
+
+function updateLeaderboard(name,score){
+
+leaderboard.push({name,score})
+
+leaderboard.sort((a,b)=>b.score-a.score)
+
+leaderboard=leaderboard.slice(0,10)
+
+localStorage.setItem(
+"leaderboard",
+JSON.stringify(leaderboard)
+)
+
+}
+
+function renderLeaderboard(){
+
+const list=document.getElementById("rank")
+
+list.innerHTML=""
+
+leaderboard.forEach(p=>{
+
+const li=document.createElement("li")
+
+li.innerText=p.name+" "+p.score
+
+list.appendChild(li)
+
+})
+
+}
