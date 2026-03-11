@@ -1,60 +1,64 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html>
 
 <head>
+
 <meta charset="UTF-8">
-<title>Labubu Ultimate Blind Box</title>
-<link rel="stylesheet" href="style.css">
+
+<title>Labubu 3D Blind Box</title>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+background:#ffd6e7;
+font-family:Arial;
+}
+
+#ui{
+position:absolute;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+text-align:center;
+}
+
+button{
+padding:12px 25px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#ff4f87;
+color:white;
+cursor:pointer;
+}
+
+#result{
+margin-top:10px;
+font-size:22px;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<header>
-<h1>Labubu Ultimate Blind Box</h1>
+<div id="ui">
 
-<div class="stats">
-金币: <span id="coins">200</span>
-<button onclick="dailyReward()">每日奖励</button>
-</div>
+<h1>3D Labubu Blind Box</h1>
 
-</header>
-
-<div class="main">
-
-<div class="box-area">
-
-<img id="box" src="https://i.imgur.com/6X4KQ8B.png" alt="blind box">
-
-<br><br>
-
-<button onclick="draw()">抽盲盒</button>
+<button onclick="openBox()">🎁 开盒</button>
 
 <div id="result"></div>
 
 </div>
 
-<div class="collection">
-
-<h2>图鉴</h2>
-
-<div id="collectionGrid"></div>
-
-</div>
-
-</div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 
 <script src="script.js"></script>
 
-  <div id="secretEffect" class="secret"></div>
-  <div class="shop">
-
-<h2>商店</h2>
-
-<button onclick="buyCoins(50)">购买50金币</button>
-
-<button onclick="buyCoins(100)">购买100金币</button>
-
-</div>
 </body>
 
 </html>
