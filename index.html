@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Labubu Blind Box</title>
+
+<style>
+body{
+font-family:Arial;
+text-align:center;
+background:#ffe6f0;
+}
+
+h1{
+color:#ff4f87;
+}
+
+button{
+padding:15px 30px;
+font-size:18px;
+background:#ff4f87;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+}
+
+.result{
+margin-top:20px;
+font-size:22px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>🎁 Labubu 抽盲盒</h1>
+
+<button onclick="draw()">抽盲盒</button>
+
+<div class="result" id="result"></div>
+
+<script>
+
+const labubus=[
+"Forest Labubu",
+"Pink Labubu",
+"Astronaut Labubu",
+"Pirate Labubu",
+"Ghost Labubu",
+"Golden Labubu"
+]
+
+function draw(){
+
+let r=Math.floor(Math.random()*labubus.length)
+
+document.getElementById("result").innerText=
+"你抽到了: "+labubus[r]
+
+}
+
+</script>
+
+</body>
+</html>
