@@ -1,67 +1,203 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta charset="UTF-8">
-<title>Labubu Blind Box</title>
+
+<title>Labubu World</title>
 
 <style>
+
 body{
-font-family:Arial;
+margin:0;
+font-family:"Arial";
+background:linear-gradient(180deg,#ffd6e7,#fff);
 text-align:center;
-background:#ffe6f0;
 }
 
-h1{
-color:#ff4f87;
+/* header */
+
+header{
+background:#ff6fa5;
+color:white;
+padding:20px;
+font-size:32px;
+font-weight:bold;
+}
+
+/* hero */
+
+.hero{
+padding:40px;
+}
+
+.hero img{
+width:220px;
+}
+
+/* buttons */
+
+.buttons{
+margin-top:20px;
 }
 
 button{
 padding:15px 30px;
+margin:10px;
 font-size:18px;
-background:#ff4f87;
 border:none;
-border-radius:10px;
+border-radius:12px;
+background:#ff4f87;
 color:white;
 cursor:pointer;
 }
 
-.result{
-margin-top:20px;
+button:hover{
+background:#ff2e6e;
+}
+
+/* coins */
+
+.coins{
+margin-top:10px;
+font-size:20px;
+}
+
+/* latest */
+
+.latest{
+margin-top:30px;
 font-size:22px;
 }
+
+/* gallery */
+
+.gallery{
+margin-top:40px;
+padding:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:15px;
+max-width:700px;
+margin:auto;
+}
+
+.card{
+background:white;
+border-radius:10px;
+padding:10px;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* footer */
+
+footer{
+margin-top:50px;
+padding:20px;
+background:#ff6fa5;
+color:white;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h1>🎁 Labubu 抽盲盒</h1>
+<header>
+Labubu World
+</header>
 
-<button onclick="draw()">抽盲盒</button>
+<div class="hero">
 
-<div class="result" id="result"></div>
+<h2>欢迎来到 Labubu 抽盲盒</h2>
+
+<img src="https://i.imgur.com/7yUvePI.png">
+
+<div class="buttons">
+
+<button onclick="draw()">🎁 抽盲盒</button>
+
+<button onclick="alert('图鉴功能页面')">📚 图鉴</button>
+
+</div>
+
+<div class="coins">
+
+金币：<span id="coins">100</span>
+
+</div>
+
+</div>
+
+<div class="latest">
+
+最新抽到：<span id="latest">暂无</span>
+
+</div>
+
+<div class="gallery">
+
+<h2>热门 Labubu</h2>
+
+<div class="grid">
+
+<div class="card">Forest Labubu</div>
+<div class="card">Pink Labubu</div>
+<div class="card">Ghost Labubu</div>
+<div class="card">Astronaut Labubu</div>
+<div class="card">Golden Labubu</div>
+
+</div>
+
+</div>
+
+<footer>
+
+Labubu Fan Site
+
+</footer>
 
 <script>
+
+let coins=100
 
 const labubus=[
 "Forest Labubu",
 "Pink Labubu",
-"Astronaut Labubu",
-"Pirate Labubu",
 "Ghost Labubu",
-"Golden Labubu"
+"Astronaut Labubu",
+"Golden Labubu",
+"Galaxy Labubu",
+"Robot Labubu",
+"Angel Labubu"
 ]
 
 function draw(){
 
+if(coins<10){
+alert("金币不够")
+return
+}
+
+coins-=10
+
+document.getElementById("coins").innerText=coins
+
 let r=Math.floor(Math.random()*labubus.length)
 
-document.getElementById("result").innerText=
-"你抽到了: "+labubus[r]
+let item=labubus[r]
+
+document.getElementById("latest").innerText=item
 
 }
 
 </script>
 
 </body>
+
 </html>
