@@ -1,244 +1,121 @@
-let coins = parseInt(localStorage.getItem("coins")) || 200
-let collection = JSON.parse(localStorage.getItem("collection")) || []
+let scene,camera,renderer
 
-document.getElementById("coins").innerText = coins
+let box,lid,labubu
 
-const labubus = []
+init()
+animate()
 
-for(let i=1;i<=30;i++){
+function init(){
 
-let rarity="普通"
+scene=new THREE.Scene()
 
-if(i>20) rarity="稀有"
-if(i>26) rarity="史诗"
-if(i>29) rarity="隐藏"
-
-labubus.push({
-
-name:"Labubu "+i,
-rarity:rarity
-
-})
-
-}
-
-function save(){
-
-localStorage.setItem("coins",coins)
-localStorage.setItem("collection",JSON.stringify(collection))
-
-}
-
-function draw(){
-
-if(coins<10){
-
-alert("金币不足")
-
-return
-
-}
-
-coins-=10
-
-document.getElementById("coins").innerText=coins
-
-let box=document.getElementById("box")
-
-box.classList.add("shake")
-
-setTimeout(()=>{
-
-box.classList.remove("shake")
-
-let rand=Math.random()
-
-let pool
-
-if(rand<0.65){
-
-pool=labubus.filter(x=>x.rarity=="普通")
-
-}
-
-else if(rand<0.9){
-
-pool=labubus.filter(x=>x.rarity=="稀有")
-
-}
-
-else if(rand<0.99){
-
-pool=labubus.filter(x=>x.rarity=="史诗")
-
-}
-
-else{
-
-pool=labubus.filter(x=>x.rarity=="隐藏")
-
-}
-
-let item=pool[Math.floor(Math.random()*pool.length)]
-
-document.getElementById("result").innerText=
-
-"获得 "+item.name+" ["+item.rarity+"]"
-
-if(!collection.includes(item.name)){
-
-collection.push(item.name)
-
-renderCollection()
-
-}
-
-save()
-
-},600)
-
-}
-
-function renderCollection(){
-
-let grid=document.getElementById("collectionGrid")
-
-grid.innerHTML=""
-
-labubus.forEach(l=>{
-
-let owned=collection.includes(l.name)
-
-let div=document.createElement("div")
-
-div.className="card"
-
-div.innerText=owned?l.name:"未解锁"
-
-grid.appendChild(div)
-
-})
-
-}
-
-function dailyReward(){
-
-coins+=100
-
-document.getElementById("coins").innerText=coins
-
-save()
-
-}
-
-renderCollection()
-
-function draw(){
-
-const box=document.getElementById("box")
-
-box.classList.add("box-open")
-
-setTimeout(()=>{
-box.classList.remove("box-open")
-openResult()
-},700)
-
-}
-
-if(item.rarity=="隐藏"){
-
-const fx=document.getElementById("secretEffect")
-
-fx.classList.add("show")
-
-setTimeout(()=>{
-fx.classList.remove("show")
-},1000)
-
-}
-
-const labubus=[]
-
-for(let i=1;i<=50;i++){
-
-let rarity="普通"
-
-if(i>35) rarity="稀有"
-if(i>45) rarity="史诗"
-if(i>49) rarity="隐藏"
-
-labubus.push({
-name:"Labubu "+i,
-rarity:rarity
-})
-
-}
-
-function renderCollection(){
-
-const grid=document.getElementById("collection")
-
-grid.innerHTML=""
-
-labubus.forEach(l=>{
-
-const owned=collection.includes(l.name)
-
-const div=document.createElement("div")
-
-div.className="card"
-
-div.innerHTML=owned?l.name:"❓ 未解锁"
-
-grid.appendChild(div)
-
-})
-
-}
-
-function buyCoins(n){
-
-coins+=n
-
-updateCoins()
-
-save()
-
-}
-
-let leaderboard=
-JSON.parse(localStorage.getItem("leaderboard")||"[]")
-
-function updateLeaderboard(name,score){
-
-leaderboard.push({name,score})
-
-leaderboard.sort((a,b)=>b.score-a.score)
-
-leaderboard=leaderboard.slice(0,10)
-
-localStorage.setItem(
-"leaderboard",
-JSON.stringify(leaderboard)
+camera=new THREE.PerspectiveCamera(
+75,
+window.innerWidth/window.innerHeight,
+0.1,
+1000
 )
 
+renderer=new THREE.WebGLRenderer()
+
+renderer.setSize(window.innerWidth,window.innerHeight)
+
+document.body.appendChild(renderer.domElement)
+
+const light=new THREE.PointLight(0xffffff,1)
+
+light.position.set(5,5,5)
+
+scene.add(light)
+
+camera.position.z=5
+
+createBox()
+
 }
 
-function renderLeaderboard(){
+function createBox(){
 
-const list=document.getElementById("rank")
+const boxGeo=new THREE.BoxGeometry(2,2,2)
 
-list.innerHTML=""
-
-leaderboard.forEach(p=>{
-
-const li=document.createElement("li")
-
-li.innerText=p.name+" "+p.score
-
-list.appendChild(li)
-
+const boxMat=new THREE.MeshStandardMaterial({
+color:0xff4f87
 })
+
+box=new THREE.Mesh(boxGeo,boxMat)
+
+scene.add(box)
+
+const lidGeo=new THREE.BoxGeometry(2.1,0.3,2.1)
+
+const lidMat=new THREE.MeshStandardMaterial({
+color:0xff6fa5
+})
+
+lid=new THREE.Mesh(lidGeo,lidMat)
+
+lid.position.y=1.2
+
+scene.add(lid)
+
+const labuGeo=new THREE.SphereGeometry(0.7,32,32)
+
+const labuMat=new THREE.MeshStandardMaterial({
+color:0xffffff
+})
+
+labubu=new THREE.Mesh(labuGeo,labuMat)
+
+labubu.position.y=-1
+
+scene.add(labubu)
+
+}
+
+function animate(){
+
+requestAnimationFrame(animate)
+
+box.rotation.y+=0.01
+
+renderer.render(scene,camera)
+
+}
+
+function openBox(){
+
+document.getElementById("result").innerText="开盒中..."
+
+let t=0
+
+const open=setInterval(()=>{
+
+lid.position.y+=0.05
+
+labubu.position.y+=0.05
+
+t++
+
+if(t>40){
+
+clearInterval(open)
+
+const rar=Math.random()
+
+if(rar>0.98){
+
+labubu.material.color.set(0xffd700)
+
+document.getElementById("result").innerText="✨隐藏款 Golden Labubu!"
+
+}else{
+
+document.getElementById("result").innerText="获得 Labubu!"
+
+}
+
+}
+
+},30)
 
 }
